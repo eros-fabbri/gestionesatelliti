@@ -1,5 +1,5 @@
-package it.prova.gestionesatelliti;
 
+package it.prova.gestionesatelliti;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
