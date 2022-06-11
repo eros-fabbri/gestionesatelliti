@@ -23,7 +23,7 @@ public class DataCheckValidator implements ConstraintValidator<DateCheck, Satell
 	        }
 
 	        if (satellite.getDataLancio() != null && satellite.getDataRientro() != null) {
-	        	isValid = satellite.getDataLancio().before(satellite.getDataRientro());
+	        	isValid = satellite.getDataLancio().after(satellite.getDataRientro());
 	        }
 	        
 	        if (satellite.getDataLancio() == null || satellite.getDataRientro() == null) {
