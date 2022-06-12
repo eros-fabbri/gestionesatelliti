@@ -23,16 +23,23 @@ public class SatelliteCheckValidator implements ConstraintValidator<SatelliteChe
 
 		if (satellite.getDataLancio() != null && satellite.getDataRientro() != null) {
 			isValid = satellite.getDataLancio().before(satellite.getDataRientro());
+			if (!isValid) {
+				context.disableDefaultConstraintViolation();
+				context.buildConstraintViolationWithTemplate("{dataRientro.primaDiDataLancio}")
+						.addPropertyNode("dataRientro").addConstraintViolation();
+			}
 		}
 
 		if (satellite.getStatoSatellite() == StatoSatellite.FISSO && satellite.getDataRientro() != null) {
-			isValid = false;
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate("{statoSatellite.statoNonValido}")
+					.addPropertyNode("statoSatellite").addConstraintViolation();
 		}
-		
+
 		if (satellite.getStatoSatellite() == StatoSatellite.DISATTIVATO && satellite.getDataRientro() == null) {
 			isValid = true;
 		}
-		
+
 		return isValid;
 	}
 }

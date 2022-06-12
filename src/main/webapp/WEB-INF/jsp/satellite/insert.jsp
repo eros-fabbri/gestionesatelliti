@@ -104,7 +104,7 @@
 									title="formato : gg/mm/aaaa" name="dataLancio" required
 									value="${parsedDate}">
 							</spring:bind>
-							
+							<form:errors path="dataLancio" cssClass="error_field" />
 						</div>
 						
 						<fmt:formatDate pattern='yyyy-MM-dd' var="parsedDate" type='date'
@@ -119,7 +119,7 @@
 									title="formato : gg/mm/aaaa" name="dataRientro" required
 									value="${parsedDate}">
 							</spring:bind>
-							
+							<form:errors path="dataRientro" cssClass="error_field" />
 						</div>
 
 						<div class="col-md-3">
@@ -129,13 +129,14 @@
 									id="statoSatellite" name="statoSatellite" required>
 									<option value="" selected>- Selezionare -</option>
 									<option value="ATTIVO"
-										${insert_satellite_attr.statoSatellite == 'IN_MOVIMENTO'?'selected':''}>ATTIVO</option>
+										${insert_satellite_attr.statoSatellite == 'IN_MOVIMENTO'?'selected':''}>IN_MOVIMENTO</option>
 									<option value="SOSPESO"
-										${insert_satellite_attr.statoSatellite == 'FISSO'?'selected':''}>SOSPESO</option>
+										${insert_satellite_attr.statoSatellite == 'FISSO'?'selected':''}>FISSO</option>
 									<option value="DIMESSO"
 										${insert_satellite_attr.statoSatellite == 'DISATTIVATO'?'selected':''}>DISATTIVATO</option>
 								</select>
 							</spring:bind>
+							<!-- <form:errors path="statoSatellite" cssClass="error_field" /> -->
 						</div>
 
 

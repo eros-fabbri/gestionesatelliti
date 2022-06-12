@@ -45,7 +45,7 @@ public class SatelliteController {
 	@GetMapping("/edit/{idSatellite}")
 	public String edit(@PathVariable(required = true) Long idSatellite,Model model) {
 		System.out.println(satelliteService.caricaSingoloElemento(idSatellite));
-		model.addAttribute("update_satellite_attr", satelliteService.caricaSingoloElemento(idSatellite));
+		model.addAttribute("edit_satellite_attr", satelliteService.caricaSingoloElemento(idSatellite));
 		return "satellite/edit";
 	}
 	
@@ -59,12 +59,23 @@ public class SatelliteController {
 	public String save(@Valid @ModelAttribute("insert_satellite_attr") Satellite satellite, BindingResult result,
 			RedirectAttributes redirectAttrs) {
 		
-		
-
 		if (result.hasErrors())
 			return "satellite/insert";
 
 		satelliteService.inserisciNuovo(satellite);
+
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/satellite/list";
+	}
+	
+	@PostMapping("/update")
+	public String update(@Valid @ModelAttribute("edit_satellite_attr") Satellite satellite, BindingResult result,
+			RedirectAttributes redirectAttrs) {
+
+		if (result.hasErrors())
+			return "satellite/edit";
+
+		satelliteService.aggiorna(satellite);
 
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite/list";
