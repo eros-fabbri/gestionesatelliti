@@ -14,15 +14,15 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import it.prova.gestionesatelliti.validation.constraints.DateCheck;
+import it.prova.gestionesatelliti.validation.constraints.SatelliteCheck;
 
 @Entity
 @Table(name = "satellite")
-@DateCheck
+@SatelliteCheck
 public class Satellite {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	@Column(name = "id")
 	private Long id;
 

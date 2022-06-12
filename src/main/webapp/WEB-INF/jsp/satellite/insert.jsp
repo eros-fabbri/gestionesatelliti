@@ -96,7 +96,7 @@
 							value='${insert_satellite_attr.dataLancio}' />
 						<div class="col-md-3">
 							<label for="dataLancio" class="form-label">Data del
-								Lancio <span class="text-danger">*</span>
+								Lancio 
 							</label>
 							<spring:bind path="dataLancio">
 								<input class="form-control ${status.error ? 'is-invalid' : ''}"
@@ -111,7 +111,7 @@
 							value='${insert_satellite_attr.dataRientro}' />
 						<div class="col-md-3">
 							<label for="dataRientro" class="form-label">Data di
-								Nascita <span class="text-danger">*</span>
+								Rientro 
 							</label>
 							<spring:bind path="dataRientro">
 								<input class="form-control ${status.error ? 'is-invalid' : ''}"
@@ -123,8 +123,7 @@
 						</div>
 
 						<div class="col-md-3">
-							<label for="statoSatellite" class="form-label">Stato <span
-								class="text-danger">*</span></label>
+							<label for="statoSatellite" class="form-label">Stato </label>
 							<spring:bind path="statoSatellite">
 								<select class="form-select ${status.error ? 'is-invalid' : ''}"
 									id="statoSatellite" name="statoSatellite" required>
