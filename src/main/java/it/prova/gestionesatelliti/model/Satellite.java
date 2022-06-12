@@ -16,14 +16,13 @@ import javax.validation.constraints.NotNull;
 
 import it.prova.gestionesatelliti.validation.constraints.SatelliteCheck;
 
-
 @Entity
 @Table(name = "satellite")
 @SatelliteCheck
 public class Satellite {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
@@ -37,7 +36,7 @@ public class Satellite {
 
 	@Column(name = "dataLancio")
 	private Date dataLancio;
-	
+
 	@Column(name = "dataRientro")
 	private Date dataRientro;
 
@@ -91,6 +90,11 @@ public class Satellite {
 
 	public void setStatoSatellite(StatoSatellite statoSatellite) {
 		this.statoSatellite = statoSatellite;
+	}
+
+	public boolean isDeletable() {
+		return (this.statoSatellite == StatoSatellite.DISATTIVATO && this.dataRientro != null)
+				|| this.dataLancio == null;
 	}
 
 }

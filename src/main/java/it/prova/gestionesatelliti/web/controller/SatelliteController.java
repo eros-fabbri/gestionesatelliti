@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -97,5 +98,26 @@ public class SatelliteController {
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite/list";
 	}
+	
 
+	@GetMapping("/delete/{idSatellite}")
+	public String delete(@PathVariable(required = true) Long idSatellite, Model model) {
+		model.addAttribute("delete_satellite_attr", satelliteService.caricaSingoloElemento(idSatellite));
+		return "satellite/delete";
+	}
+	
+	@PostMapping("/remove")
+	public String remove(@RequestParam(required = true) Long id,
+			RedirectAttributes redirectAttrs) {
+		
+		Satellite satelliteToRemove = satelliteService.caricaSingoloElemento(id);
+		if (satelliteToRemove.isDeletable()) {
+			satelliteService.rimuovi(satelliteToRemove);
+			redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+			return "redirect:/satellite/list";
+		}
+		redirectAttrs.addFlashAttribute("errorMessage", "Il satellite non può essere eliminato");
+		return "redirect:/satellite/list"; 
+		
+	}
 }
