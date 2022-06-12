@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 
 import it.prova.gestionesatelliti.validation.constraints.SatelliteCheck;
 
+
 @Entity
 @Table(name = "satellite")
 @SatelliteCheck

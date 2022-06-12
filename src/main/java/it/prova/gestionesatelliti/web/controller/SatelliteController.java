@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,14 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.prova.gestionesatelliti.model.Satellite;
 import it.prova.gestionesatelliti.service.SatelliteService;
 
+
 @Controller
 @RequestMapping(value = "/satellite")
 public class SatelliteController {
-	
-	
+
 	@Autowired
 	SatelliteService satelliteService;
-	
+
 	@GetMapping("/list")
 	public ModelAndView listAll() {
 		ModelAndView mv = new ModelAndView();
@@ -35,30 +36,46 @@ public class SatelliteController {
 		mv.setViewName("satellite/list");
 		return mv;
 	}
-	
+
+	@GetMapping("/search")
+	public String search() {
+		return "satellite/search";
+	}
+
+	@PostMapping("/listExample")
+	public String listByExample(Satellite example, ModelMap model, BindingResult result,
+			RedirectAttributes redirectAttrs) {
+		List<Satellite> results = satelliteService.findByExample(example);
+		model.addAttribute("satelliti_list_attribute", results);
+		if (result.hasErrors())
+			return "satellite/search";
+		
+		return "satellite/list";
+	}
+
 	@GetMapping("/show/{idSatellite}")
-	public String show( @PathVariable(required = true) Long idSatellite, Model model) {
+	public String show(@PathVariable(required = true) Long idSatellite, Model model) {
 		model.addAttribute("show_satellite_attr", satelliteService.caricaSingoloElemento(idSatellite));
 		return "satellite/show";
 	}
-	
+
 	@GetMapping("/edit/{idSatellite}")
-	public String edit(@PathVariable(required = true) Long idSatellite,Model model) {
+	public String edit(@PathVariable(required = true) Long idSatellite, Model model) {
 		System.out.println(satelliteService.caricaSingoloElemento(idSatellite));
 		model.addAttribute("edit_satellite_attr", satelliteService.caricaSingoloElemento(idSatellite));
 		return "satellite/edit";
 	}
-	
+
 	@GetMapping("/insert")
 	public String create(Model model) {
 		model.addAttribute("insert_satellite_attr", new Satellite());
 		return "satellite/insert";
 	}
-	
+
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute("insert_satellite_attr") Satellite satellite, BindingResult result,
+	public String save(@Valid  @ModelAttribute("insert_satellite_attr") Satellite satellite, BindingResult result,
 			RedirectAttributes redirectAttrs) {
-		
+
 		if (result.hasErrors())
 			return "satellite/insert";
 
@@ -67,7 +84,7 @@ public class SatelliteController {
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite/list";
 	}
-	
+
 	@PostMapping("/update")
 	public String update(@Valid @ModelAttribute("edit_satellite_attr") Satellite satellite, BindingResult result,
 			RedirectAttributes redirectAttrs) {
@@ -80,6 +97,5 @@ public class SatelliteController {
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite/list";
 	}
-	
 
 }
