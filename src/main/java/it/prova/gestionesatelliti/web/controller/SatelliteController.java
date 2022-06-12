@@ -1,5 +1,7 @@
 package it.prova.gestionesatelliti.web.controller;
 
+
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.gestionesatelliti.model.Satellite;
+import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.service.SatelliteService;
 
 @Controller
@@ -146,5 +149,39 @@ public class SatelliteController {
 		mv.addObject("satelliti_list_attribute", results);
 		mv.setViewName("satellite/list");
 		return mv;
+	}
+	
+	@GetMapping("/lancia/{idSatellite}")
+	public String lancia(@PathVariable(required = true) Long idSatellite, RedirectAttributes redirectAttrs) {
+		
+		Satellite satellite = satelliteService.caricaSingoloElemento(idSatellite);
+		
+		if(satellite.getStatoSatellite() == null && satellite.getDataLancio() == null) {
+			satellite.setDataLancio(new Date());
+			satellite.setStatoSatellite(StatoSatellite.IN_MOVIMENTO);
+			satelliteService.aggiorna(satellite);
+			return "redirect:/satellite/list";
+		}
+		
+		redirectAttrs.addFlashAttribute("errorMessage", "Il satellite risulta già lanciato");
+		return "redirect:/satellite/list";
+		
+	}
+	
+	@GetMapping("/rientra/{idSatellite}")
+	public String rientra(@PathVariable(required = true) Long idSatellite, RedirectAttributes redirectAttrs) {
+		
+		Satellite satellite = satelliteService.caricaSingoloElemento(idSatellite);
+		
+		if( satellite.getDataRientro() == null) {
+			satellite.setDataRientro(new Date());
+			satellite.setStatoSatellite(StatoSatellite.DISATTIVATO);
+			satelliteService.aggiorna(satellite);
+			return "redirect:/satellite/list";
+		}
+		
+		redirectAttrs.addFlashAttribute("errorMessage", "Il satellite risulta già lanciato");
+		return "redirect:/satellite/list";
+		
 	}
 }

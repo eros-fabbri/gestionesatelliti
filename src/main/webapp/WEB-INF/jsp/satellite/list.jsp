@@ -1,6 +1,7 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
 <html lang="it" class="h-100" >
 	 <head>
@@ -69,6 +70,12 @@
 											<td>
 												<a class="btn  btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/satellite/show/${satelliteItem.id }">Visualizza</a>
 												<a class="btn  btn-sm btn-outline-primary ml-2 mr-2" href="${pageContext.request.contextPath}/satellite/edit/${satelliteItem.id }">Edit</a>
+												<c:if test="${satelliteItem.dataLancio == null && satelliteItem.statoSatellite==null}">
+												<a class="btn  btn-sm btn-outline-warning ml-2 mr-2" href="${pageContext.request.contextPath}/satellite/lancia/${satelliteItem.id }">Lancia</a>
+												</c:if>
+												<c:if test="${satelliteItem.dataLancio != null && satelliteItem.dataRientro==null}">
+												<a class="btn  btn-sm btn-outline-warning ml-2 mr-2" href="${pageContext.request.contextPath}/satellite/rientra/${satelliteItem.id }">Rientra</a>
+												</c:if>
 												<a class="btn btn-outline-danger btn-sm" href="${pageContext.request.contextPath}/satellite/delete/${satelliteItem.id }">Delete</a>
 											</td>
 										</tr>
