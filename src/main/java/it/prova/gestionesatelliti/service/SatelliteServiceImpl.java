@@ -1,6 +1,8 @@
 package it.prova.gestionesatelliti.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.Predicate;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.gestionesatelliti.model.Satellite;
+import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.repository.SatelliteRepository;
 
 @Service
@@ -60,10 +63,12 @@ public class SatelliteServiceImpl implements SatelliteService {
 			List<Predicate> predicates = new ArrayList<Predicate>();
 
 			if (StringUtils.isNotEmpty(example.getDenominazione()))
-				predicates.add(cb.like(cb.upper(root.get("denominazione")), "%" + example.getDenominazione().toUpperCase() + "%"));
+				predicates.add(cb.like(cb.upper(root.get("denominazione")),
+						"%" + example.getDenominazione().toUpperCase() + "%"));
 
 			if (StringUtils.isNotEmpty(example.getCodice()))
-				predicates.add(cb.like(cb.upper(root.get("codiceSatellite")), "%" + example.getCodice().toUpperCase() + "%"));
+				predicates.add(
+						cb.like(cb.upper(root.get("codiceSatellite")), "%" + example.getCodice().toUpperCase() + "%"));
 
 			if (example.getStatoSatellite() != null)
 				predicates.add(cb.equal(root.get("statoSatellite"), example.getStatoSatellite()));
@@ -78,6 +83,27 @@ public class SatelliteServiceImpl implements SatelliteService {
 		};
 
 		return repository.findAll(specificationCriteria);
+	}
+
+	@Override
+	public List<Satellite> lanciatiDaPiùDiDueAnni() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.YEAR, -2);
+		Date dataDueAnniFa = calendar.getTime();
+		return repository.findAllByStatoSatelliteAndDataLancioBefore(StatoSatellite.DISATTIVATO, dataDueAnniFa);
+	}
+
+	@Override
+	public List<Satellite> disattivatiNonRientrati() {
+		return repository.findAllByStatoSatelliteAndDataRientroNull(StatoSatellite.DISATTIVATO);
+	}
+
+	@Override
+	public List<Satellite> fissiInOrbita10Anni() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.YEAR, -10);
+		Date data10AnniFa = calendar.getTime();
+		return repository.findAllByStatoSatelliteAndDataLancioBefore(StatoSatellite.FISSO, data10AnniFa);
 	}
 
 }

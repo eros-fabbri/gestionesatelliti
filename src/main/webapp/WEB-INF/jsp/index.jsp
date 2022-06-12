@@ -7,7 +7,7 @@
 		<!-- Custom styles per le features di bootstrap 'Columns with icons' -->
 	   <link href="${pageContext.request.contextPath}/assets/css/features.css" rel="stylesheet" type="text/css">
 	   
-	   <title>Raccolta Film</title>
+	   <title>Satelliti</title>
 	 </head>
 	   <body class="d-flex flex-column h-100">
 	   		
@@ -53,6 +53,10 @@
 				        <h1 class="display-5 fw-bold">Benvenuto alla Gestione Satelliti</h1>
 				        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. </p>
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/list">Lista satellti</a>
+						<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listPiuDiDueAnni">Satelliti Lanciati Da Due Anni o Più</a>
+						<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listDisattivatiNonRentrati">Satellii Disattivati Non Rientrati</a>	
+						<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listPiuDi10Anni">Satelliti Fissi In Orbita Da 10 Anni</a>			     
+				     
 				      </div>
 			    </div>
 			    

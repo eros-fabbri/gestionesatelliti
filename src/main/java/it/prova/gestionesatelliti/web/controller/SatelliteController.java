@@ -21,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.prova.gestionesatelliti.model.Satellite;
 import it.prova.gestionesatelliti.service.SatelliteService;
 
-
 @Controller
 @RequestMapping(value = "/satellite")
 public class SatelliteController {
@@ -50,7 +49,7 @@ public class SatelliteController {
 		model.addAttribute("satelliti_list_attribute", results);
 		if (result.hasErrors())
 			return "satellite/search";
-		
+
 		return "satellite/list";
 	}
 
@@ -74,7 +73,7 @@ public class SatelliteController {
 	}
 
 	@PostMapping("/save")
-	public String save(@Valid  @ModelAttribute("insert_satellite_attr") Satellite satellite, BindingResult result,
+	public String save(@Valid @ModelAttribute("insert_satellite_attr") Satellite satellite, BindingResult result,
 			RedirectAttributes redirectAttrs) {
 
 		if (result.hasErrors())
@@ -98,18 +97,16 @@ public class SatelliteController {
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite/list";
 	}
-	
 
 	@GetMapping("/delete/{idSatellite}")
 	public String delete(@PathVariable(required = true) Long idSatellite, Model model) {
 		model.addAttribute("delete_satellite_attr", satelliteService.caricaSingoloElemento(idSatellite));
 		return "satellite/delete";
 	}
-	
+
 	@PostMapping("/remove")
-	public String remove(@RequestParam(required = true) Long id,
-			RedirectAttributes redirectAttrs) {
-		
+	public String remove(@RequestParam(required = true) Long id, RedirectAttributes redirectAttrs) {
+
 		Satellite satelliteToRemove = satelliteService.caricaSingoloElemento(id);
 		if (satelliteToRemove.isDeletable()) {
 			satelliteService.rimuovi(satelliteToRemove);
@@ -117,7 +114,37 @@ public class SatelliteController {
 			return "redirect:/satellite/list";
 		}
 		redirectAttrs.addFlashAttribute("errorMessage", "Il satellite non può essere eliminato");
-		return "redirect:/satellite/list"; 
-		
+		return "redirect:/satellite/list";
+
+	}
+
+	@GetMapping("/listPiuDiDueAnni")
+	public ModelAndView listPiuDiDueAnni() {
+		ModelAndView mv = new ModelAndView();
+		List<Satellite> results = satelliteService.lanciatiDaPiùDiDueAnni();
+		System.out.println(results);
+		mv.addObject("satelliti_list_attribute", results);
+		mv.setViewName("satellite/list");
+		return mv;
+	}
+
+	@GetMapping("/listPiuDi10Anni")
+	public ModelAndView listPiuDi10Anni() {
+		ModelAndView mv = new ModelAndView();
+		List<Satellite> results = satelliteService.fissiInOrbita10Anni();
+		System.out.println(results);
+		mv.addObject("satelliti_list_attribute", results);
+		mv.setViewName("satellite/list");
+		return mv;
+	}
+	
+	@GetMapping("/listDisattivatiNonRentrati")
+	public ModelAndView listDisattivatiNonRentrati() {
+		ModelAndView mv = new ModelAndView();
+		List<Satellite> results = satelliteService.disattivatiNonRientrati();
+		System.out.println(results);
+		mv.addObject("satelliti_list_attribute", results);
+		mv.setViewName("satellite/list");
+		return mv;
 	}
 }
